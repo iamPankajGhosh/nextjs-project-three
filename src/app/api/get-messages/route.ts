@@ -57,5 +57,16 @@ export async function POST(request: Request) {
         status: 200,
       }
     );
-  } catch (error) {}
+  } catch (error: any) {
+    console.error("Unexpected Error occured: ", error);
+    return Response.json(
+      {
+        success: false,
+        message: error.message,
+      },
+      {
+        status: 500,
+      }
+    );
+  }
 }
