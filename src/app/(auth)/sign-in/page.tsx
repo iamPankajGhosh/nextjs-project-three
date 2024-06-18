@@ -1,11 +1,9 @@
 "use client";
 
-import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDebounceCallback } from "usehooks-ts";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -18,7 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signInSchema } from "@/schemas/singInSchema";
@@ -38,6 +35,8 @@ export default function SignInPage() {
 
   const { toast } = useToast();
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    setIsSubmitting(true);
+
     const result = await signIn("credentials", {
       redirect: false,
       identifier: data.identifier,
@@ -61,6 +60,7 @@ export default function SignInPage() {
     }
 
     if (result?.url) {
+      setIsSubmitting(false);
       router.replace("/dashboard");
     }
   };
