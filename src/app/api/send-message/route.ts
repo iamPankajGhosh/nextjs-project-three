@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     user.messages.push(newMessage as Message);
     await user.save();
 
-    Response.json(
+    return Response.json(
       {
         success: true,
         message: "Message sent successfully",
