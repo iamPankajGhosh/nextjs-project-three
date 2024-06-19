@@ -18,21 +18,21 @@ export async function GET(request: Request) {
   }
   const userId = new mongoose.Types.ObjectId(_user._id);
   try {
-    const messages = await UserModel.aggregate([
+    const updatedResult = await UserModel.aggregate([
       { $match: { _id: userId } },
       { $unwind: "$messages" },
       { $sort: { "messages.createdAt": -1 } },
       { $group: { _id: "$_id", messages: { $push: "$messages" } } },
     ]).exec();
 
-    if (!messages) {
+    if (!updatedResult) {
       return Response.json(
         { message: "Messages not found", success: false },
         { status: 404 }
       );
     }
 
-    if (messages.length === 0) {
+    if (updatedResult[0].messages.length === 0) {
       return Response.json(
         { message: "No messages to display.", success: false },
         { status: 404 }
@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     }
 
     return Response.json(
-      { messages: messages, success: true },
+      { messages: updatedResult[0].messages, success: true },
       {
         status: 200,
       }
