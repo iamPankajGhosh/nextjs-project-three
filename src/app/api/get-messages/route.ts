@@ -32,7 +32,7 @@ export async function GET(request: Request) {
       );
     }
 
-    if (updatedResult[0].messages.length === 0) {
+    if (updatedResult.length === 0) {
       return Response.json(
         { message: "No messages to display.", success: false },
         { status: 404 }
