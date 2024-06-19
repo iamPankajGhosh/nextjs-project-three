@@ -26,18 +26,24 @@ type MessageCardProps = {
   onMessageDelete: (messageId: string) => void;
 };
 
-export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
+export function MessageCard({
+  message,
+  onMessageDelete,
+}: Readonly<MessageCardProps>) {
   const { toast } = useToast();
 
   const handleDeleteConfirm = async () => {
+    console.log("Deleting message with ID:", message?._id);
     try {
       const response = await axios.delete<ApiResponse>(
         `/api/delete-message/${message._id}`
       );
+      console.log(response.data);
       toast({
         title: response.data.message,
       });
-      onMessageDelete(message._id);
+
+      onMessageDelete(message?._id as string);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
