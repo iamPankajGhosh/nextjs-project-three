@@ -38,7 +38,6 @@ export function MessageCard({
       const response = await axios.delete<ApiResponse>(
         `/api/delete-message/${message._id}`
       );
-      console.log(response.data);
       toast({
         title: response.data.message,
       });

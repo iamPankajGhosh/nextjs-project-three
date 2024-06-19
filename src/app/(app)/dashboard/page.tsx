@@ -61,7 +61,6 @@ function UserDashboard() {
       setIsSwitchLoading(false);
       try {
         const response = await axios.get<ApiResponse>("/api/get-messages");
-        console.log(response.data);
         setMessages(response.data.messages || []);
         if (refresh) {
           toast({
