@@ -6,9 +6,9 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { messageId: string } }
+  { params }: { params: { messageid: string } }
 ) {
-  const messageId = params.messageId;
+  const messageId = params.messageid;
 
   await dbConnect();
   const session = await getServerSession(authOptions);
@@ -22,12 +22,12 @@ export async function DELETE(
   }
 
   try {
-    const updatedMessages = await UserModel.updateOne(
+    const updateResult = await UserModel.updateOne(
       { _id: _user._id },
       { $pull: { messages: { _id: messageId } } }
     );
 
-    if (updatedMessages.modifiedCount == 0) {
+    if (updateResult.modifiedCount == 0) {
       return Response.json(
         { success: false, message: "Message not found or already deleted" },
         { status: 404 }
@@ -35,7 +35,7 @@ export async function DELETE(
     }
 
     return Response.json(
-      { success: true, message: "Message Deleted" },
+      { success: true, message: `Message Deleted: ${messageId}` },
       { status: 200 }
     );
   } catch (error) {
