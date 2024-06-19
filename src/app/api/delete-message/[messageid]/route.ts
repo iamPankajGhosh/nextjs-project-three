@@ -35,7 +35,7 @@ export async function DELETE(
     }
 
     return Response.json(
-      { success: true, message: `Message Deleted: ${messageId}` },
+      { success: true, message: "Message Deleted" },
       { status: 200 }
     );
   } catch (error) {
