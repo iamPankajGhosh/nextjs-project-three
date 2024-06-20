@@ -56,6 +56,8 @@ export default function SignInPage() {
           description: result.error,
           variant: "destructive",
         });
+
+        setIsSubmitting(false);
       }
     }
 
